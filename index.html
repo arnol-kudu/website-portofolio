@@ -24,7 +24,7 @@
   <style>
     :root {
       --bg: #0a0f1c; --bg-card: #111827; --bg-elevated: #1a2235; --fg: #f0f4f8; --muted: #8b95a8;
-      --accent: #00d4aa; --accent-warm: '#ff6b35'; --border: #1e293b;
+      --accent: #00d4aa; --accent-warm: #ff6b35; --border: #1e293b;
     }
     * { scrollbar-width: thin; scrollbar-color: var(--accent) var(--bg); }
     html { scroll-behavior: smooth; }
@@ -114,6 +114,44 @@
     .pricing-content-wrapper { position: relative; z-index: 10; }
     .pricing-panel { animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Scroll to Top Button Styles */
+    #scrollTopBtn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 999;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 9999px;
+        background-color: var(--accent);
+        color: var(--bg);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        /* Initial state: hidden */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    }
+    #scrollTopBtn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    #scrollTopBtn:hover {
+        background-color: #00b894;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 212, 170, 0.4);
+    }
+    #scrollTopBtn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
   </style>
 </head>
 <body>
@@ -291,14 +329,12 @@
     </div>
   </section>
   
-  <!-- CTA Section - FIXED Z-INDEX -->
+  <!-- CTA Section -->
   <section id="kontak" class="relative py-20 md:py-32">
-    <!-- Background Blobs -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="gradient-blob blob-1" style="opacity: 0.2;"></div>
     </div>
     
-    <!-- Content Wrapper - Added z-10 -->
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
         <div class="reveal cta-card rounded-3xl p-8 md:p-10">
@@ -368,6 +404,13 @@
     </div>
   </footer>
 
+  <!-- Scroll to Top Button -->
+  <button id="scrollTopBtn" aria-label="Scroll to top">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 15l7-7 7 7"></path>
+      </svg>
+  </button>
+
   <script>
     // Footer Year
     document.getElementById('footerYear').textContent = new Date().getFullYear();
@@ -423,7 +466,7 @@
     }, {threshold:0.1});
     document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
     
-    // Smooth Scroll
+    // Smooth Scroll for Anchor Links
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', function(e) {
         const h = this.getAttribute('href');
@@ -433,6 +476,23 @@
           if(t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
         }
       });
+    });
+
+    // Scroll to Top Button Logic
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    
+    // Show button when scrolled down 300px
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollTopBtn.classList.add('show');
+        } else {
+            scrollTopBtn.classList.remove('show');
+        }
+    });
+
+    // Scroll to top on click
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     
     // Nav Scroll
