@@ -40,6 +40,14 @@
     ::-webkit-scrollbar-thumb { background: #00d4aa; border-radius: 10px; }
     body { font-family: 'DM Sans', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
     
+    /* SECURITY: Disable Text Selection */
+    html, body {
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+    }
+
     @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 25% { transform: translate(10px, -10px) scale(1.05); } 50% { transform: translate(-10px, 10px) scale(0.95); } 75% { transform: translate(10px, 5px) scale(1.02); } }
     @keyframes float-hero { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
     
@@ -118,7 +126,8 @@
   </style>
 </head>
 
-<body class="dark:bg-dark-bg bg-light-bg dark:text-gray-100 text-gray-800 transition-colors duration-300">
+<!-- SECURITY: Disable Right Click on Body -->
+<body oncontextmenu="return false;" class="dark:bg-dark-bg bg-light-bg dark:text-gray-100 text-gray-800 transition-colors duration-300">
 
   <!-- Navigation -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
@@ -322,8 +331,7 @@
       <div class="relative">
         <div class="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-accent via-purple-500 to-accent-warm"></div>
         <div class="space-y-12">
-          <div class="reveal flex flex-col md:flex-row items-start gap-8 md:gap-12">
-            <div class="md:w-1/2 md:text-right order-1 md:order-none"><h3 class="text-xl font-display font-bold dark:text-white text-gray-900 mb-2">1. Konsultasi</h3><p class="text-sm dark:text-gray-400 text-gray-600">Hubungi kami via WhatsApp untuk mendiskusikan kebutuhan, tema, dan batas waktu pengerjaan proyek Anda.</p></div><div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-gray-900 font-bold z-10 shadow-lg">1</div><div class="md:w-1/2 hidden md:block"></div></div>
+          <div class="reveal flex flex-col md:flex-row items-start gap-8 md:gap-12"><div class="md:w-1/2 md:text-right order-1 md:order-none"><h3 class="text-xl font-display font-bold dark:text-white text-gray-900 mb-2">1. Konsultasi</h3><p class="text-sm dark:text-gray-400 text-gray-600">Hubungi kami via WhatsApp untuk mendiskusikan kebutuhan, tema, dan batas waktu pengerjaan proyek Anda.</p></div><div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-gray-900 font-bold z-10 shadow-lg">1</div><div class="md:w-1/2 hidden md:block"></div></div>
           <div class="reveal flex flex-col md:flex-row items-start gap-8 md:gap-12"><div class="md:w-1/2 hidden md:block"></div><div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold z-10 shadow-lg">2</div><div class="md:w-1/2"><h3 class="text-xl font-display font-bold dark:text-white text-gray-900 mb-2">2. Deal & Down Payment</h3><p class="text-sm dark:text-gray-400 text-gray-600">Setelah deal harga, lakukan pembayaran DP 50% untuk memulai proses pengerjaan.</p></div></div>
           <div class="reveal flex flex-col md:flex-row items-start gap-8 md:gap-12"><div class="md:w-1/2 md:text-right order-1 md:order-none"><h3 class="text-xl font-display font-bold dark:text-white text-gray-900 mb-2">3. Pengerjaan</h3><p class="text-sm dark:text-gray-400 text-gray-600">Tim kami mulai mengerjakan proyek sesuai dengan kebutuhan dan standar akademik.</p></div><div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold z-10 shadow-lg">3</div><div class="md:w-1/2 hidden md:block"></div></div>
            <div class="reveal flex flex-col md:flex-row items-start gap-8 md:gap-12"><div class="md:w-1/2 hidden md:block"></div><div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-warm flex items-center justify-center text-white font-bold z-10 shadow-lg">4</div><div class="md:w-1/2"><h3 class="text-xl font-display font-bold dark:text-white text-gray-900 mb-2">4. Revisi</h3><p class="text-sm dark:text-gray-400 text-gray-600">Kami mengirimkan draft pertama, dan Anda dapat memberikan feedback untuk revisi hingga 3x.</p></div></div>
@@ -584,6 +592,58 @@
         // Optional: Reset form
         reviewForm.reset();
     });
+
+    // ============================================================
+    // SECURITY: DISABLE INSPECT ELEMENT & SHORTCUTS
+    // ============================================================
+    
+    // 1. Disable Right Click
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // 2. Disable Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S)
+    document.addEventListener('keydown', function(e) {
+        // Prevent F12
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+        // Prevent Ctrl+Shift+I (Inspect)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        // Prevent Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+            e.preventDefault();
+            return false;
+        }
+        // Prevent Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'U') {
+            e.preventDefault();
+            return false;
+        }
+        // Prevent Ctrl+S (Save)
+        if (e.ctrlKey && e.key === 'S') {
+            e.preventDefault();
+            return false;
+        }
+        // Prevent Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // 3. (Optional) Disable specific keys like "View Source" char code (old method)
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) { // F12
+            return false;
+        }
+    };
+
   </script>
 </body>
 </html>
